@@ -45,9 +45,8 @@ public class CreditsManager {
     }
 
     private CompletableFuture<CreditsData> loadAndCombineCreditsAsync() {
-        if (FileHelper.tryCreateDirectory(new File(Paths.CREDITS))) {
-            FileHelper.tryCreateDirectory(new File(Paths.MOD_CREDITS));
-        }
+        FileHelper.tryCreateDirectory(new File(Paths.CREDITS));
+        FileHelper.tryCreateDirectory(new File(Paths.MOD_CREDITS));
 
         CompletableFuture<CreditsData> modCreditsFuture = CompletableFuture.supplyAsync(() -> loadCredits(Paths.MOD_CREDITS_FILE, CREDITS_URL));
         CompletableFuture<CreditsData> commonCreditsFuture = CompletableFuture.supplyAsync(() -> loadCredits(Paths.COMMON_CREDITS_FILE, COMMON_CREDITS_URL));
@@ -184,7 +183,14 @@ public class CreditsManager {
         }
 
         public Instant getDate() {
-            return Instant.parse(date);
+            if (date == null) {
+                return Instant.EPOCH;
+            }
+            try {
+                return Instant.parse(date);
+            } catch (Exception e) {
+                return Instant.EPOCH;
+            }
         }
 
         public void saveDate(Instant date) {

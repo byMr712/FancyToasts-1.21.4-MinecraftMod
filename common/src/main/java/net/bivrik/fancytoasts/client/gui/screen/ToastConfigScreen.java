@@ -46,6 +46,7 @@ public class ToastConfigScreen extends UniversalScreen {
     private static final Component RELOAD_CUSTOMS_TOOLTIP = Components.of("tooltip.reload_customs");
 
     private final ToastConfigData toastConfigData;
+    private final ToastConfigData initialConfigData;
     private final ConfigManager configManager;
     private final CustomTextureManager customTextureManager;
 
@@ -72,6 +73,7 @@ public class ToastConfigScreen extends UniversalScreen {
 
         this.configManager = FancyToasts.getInstance().getConfigManager();
         this.toastConfigData = configManager.getToastConfigData();
+        this.initialConfigData = this.toastConfigData.copy();
         this.customTextureManager = FancyToasts.getInstance().getCustomTextureManager();
         this.customTextureManager.reload();
 
@@ -155,7 +157,7 @@ public class ToastConfigScreen extends UniversalScreen {
 
     private void done() {
         ToastConfigData data = toastConfigData.copy();
-        if (!data.equals(configManager.getToastConfigData())) {
+        if (!data.equals(initialConfigData)) {
             save(data);
         }
         this.toParentScreen();

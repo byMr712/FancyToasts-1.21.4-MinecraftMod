@@ -68,7 +68,7 @@ public class ToastsFilteringData extends ConfigData {
         if (toastsToIgnore != null) {
             for (String toastToIgnore : toastsToIgnore) {
                 if (toastToIgnore.endsWith("/...")) {
-                    prefixMatches.add(toastToIgnore.replace("/...", ""));
+                    prefixMatches.add(toastToIgnore.replace("/...", "/"));
                 } else {
                     exactMatches.add(toastToIgnore);
                 }

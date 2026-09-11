@@ -95,9 +95,11 @@ public class FancyAdvancementToast {
 
     private void playSound(SoundEvent sound, float volume) {
         float pitch = 1.0f;
-        float pitchRandomness = generalConfig.getPitchRandomness();
-        if (pitchRandomness != 0.0f) {
-            pitch = RANDOM.nextFloat(pitch - pitchRandomness, pitch + pitchRandomness);
+        float pitchRandomness = Math.abs(generalConfig.getPitchRandomness());
+        if (pitchRandomness > 0.0f) {
+            float minPitch = Math.max(0.1f, pitch - pitchRandomness);
+            float maxPitch = Math.max(minPitch + 0.01f, pitch + pitchRandomness);
+            pitch = RANDOM.nextFloat(minPitch, maxPitch);
         }
         soundManager.play(UISoundInstance.create(sound, volume, pitch));
         playedSoundsCount++;

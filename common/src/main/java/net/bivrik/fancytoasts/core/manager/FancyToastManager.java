@@ -70,10 +70,6 @@ public class FancyToastManager {
 
     public void tick() {
         if (isToastActive()) {
-            if (generalConfigData.isJadeHiding() && Services.JADE.isEnabled()) {
-                Services.JADE.tryEnable();
-            }
-
             currentToast.tick();
 
             if (currentToast.isDead()) {

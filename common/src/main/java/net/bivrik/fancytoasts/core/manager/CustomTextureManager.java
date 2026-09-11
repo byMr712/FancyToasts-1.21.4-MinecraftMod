@@ -37,6 +37,7 @@ public class CustomTextureManager {
     };
 
     private final Map<ResourceLocation, DisplayData> customTextures = new HashMap<>();
+    private final Map<ResourceLocation, File> textureFileMap = new HashMap<>();
     private final List<ResourceLocation> registeredInMinecraft = new ArrayList<>();
     private final Map<ResourceLocation, List<FancyAdvancementToast>> beingUsed = new HashMap<>();
 
@@ -200,6 +201,7 @@ public class CustomTextureManager {
 
     private void register(Map<String, File> texturesMap, List<File> jsonFiles) {
         customTextures.clear();
+        textureFileMap.clear();
 
         for (File jsonFile : jsonFiles) {
             File textureFile = texturesMap.get(FileHelper.getRawName(jsonFile));
@@ -212,6 +214,7 @@ public class CustomTextureManager {
                     ResourceLocation id = getIdFromFile(textureFile);
 
                     customTextures.put(id, data);
+                    textureFileMap.put(id, textureFile);
                     LOGGER.info("Added: {}", id);
                 } else {
                     LOGGER.warn("Json data is outdated or corrupted! File: {}", jsonFile.getAbsolutePath());
@@ -236,18 +239,23 @@ public class CustomTextureManager {
         });
     }
 
-    // Make it more constant
-    // Please, don't forget
-    // Uugh God
     private ResourceLocation getIdFromFile(File file) {
-        String rawPath = file.getPath().replace("\\", "/").replaceFirst("./config/fancytoasts", "config");
-        Debug.warn(rawPath);
-        return ResourceLocations.of(rawPath);
+        String sanitizedName = file.getName().toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9/._-]", "_");
+        return ResourceLocations.of("config/textures/" + sanitizedName);
     }
 
     private File getFileFromId(ResourceLocation id) {
-        String rawPath = id.getPath().replaceFirst("config", "./config/fancytoasts");
-        Debug.warn(rawPath);
-        return new File(rawPath);
+        File mappedFile = textureFileMap.get(id);
+        if (mappedFile != null && mappedFile.exists()) {
+            return mappedFile;
+        }
+
+        String path = id.getPath();
+        if (path.startsWith("config/")) {
+            path = path.substring(7);
+        } else if (path.startsWith("config")) {
+            path = path.substring(6);
+        }
+        return new File(Paths.CONFIG, path);
     }
 }

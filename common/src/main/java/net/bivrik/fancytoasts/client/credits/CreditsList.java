@@ -70,7 +70,11 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
     }
 
     public void scroll() {
-        this.setScrollAmount(scrollAmount() + scrollSpeed);
+        scroll(1.0f);
+    }
+
+    public void scroll(float delta) {
+        this.setScrollAmount(scrollAmount() + scrollSpeed * delta);
 
         if (scrollAmount() >= maxScrollAmount()) {
             setScrollAmount(0);

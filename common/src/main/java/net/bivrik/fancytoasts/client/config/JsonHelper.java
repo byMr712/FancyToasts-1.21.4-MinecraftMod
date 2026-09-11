@@ -30,9 +30,9 @@ public class JsonHelper {
     }
 
     public static <T> Optional<T> tryToRead(File jsonFile, Class<T> classReference) {
-        try (FileReader reader = new FileReader(jsonFile)) {
+        try (var reader = java.nio.file.Files.newBufferedReader(jsonFile.toPath(), java.nio.charset.StandardCharsets.UTF_8)) {
             T data = GSON.fromJson(reader, classReference);
-            return Optional.of(data);
+            return Optional.ofNullable(data);
         } catch (Exception e) {
             Debug.error("Could not read json file {}: {}", jsonFile.getName(), e.getMessage());
             return Optional.empty();
@@ -44,7 +44,7 @@ public class JsonHelper {
     }
 
     public static boolean tryToWrite(Gson gson, File jsonFile, Object data) {
-        try (FileWriter writer = new FileWriter(jsonFile)) {
+        try (var writer = java.nio.file.Files.newBufferedWriter(jsonFile.toPath(), java.nio.charset.StandardCharsets.UTF_8)) {
             gson.toJson(data, writer);
             return true;
         } catch (Exception e) {

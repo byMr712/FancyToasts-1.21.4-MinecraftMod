@@ -133,7 +133,7 @@
   "fancytoasts.toast.sound.minecraft.description": "Built-in sound from Minecraft",
   "fancytoasts.toast.sound.mod.description": "Sound from a modification",
   "fancytoasts.toast.sound.resourcepack.description": "Sound from a resource pack",
-  "fancytoasts.toast.test_advancement.title": "Пример достижения",
+  "fancytoasts.toast.test_advancement.title": "Example Advancement",
   "fancytoasts.toast.test_advancement.description": "Advancement description example",
 
   "key.fancytoasts.config_menu": "Fancy Toasts menu"

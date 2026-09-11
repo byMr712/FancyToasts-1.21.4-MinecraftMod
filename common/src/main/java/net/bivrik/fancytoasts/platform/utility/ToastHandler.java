@@ -72,7 +72,6 @@ public record ToastHandler(ToastsFilteringData filteringData, ToastConfigData to
         if (!filteringData.isFancyQuestToastsEnabled()) {
             return;
         }
-        info.cancel();
 
         QuestDisplay display = (QuestDisplay) Services.FTB_QUESTS.getDisplayInfo(questToast);
         if (display == null) {
@@ -84,6 +83,7 @@ public record ToastHandler(ToastsFilteringData filteringData, ToastConfigData to
             return;
         }
 
+        info.cancel();
         fancyToastManager.add(display, toastData.getSoundIdByQuestType(type));
     }
 
@@ -91,7 +91,6 @@ public record ToastHandler(ToastsFilteringData filteringData, ToastConfigData to
         if (!filteringData.isFancyQuestlogToastsEnabled()) {
             return;
         }
-        info.cancel();
 
         AdvancementDisplay display = Services.QUESTLOG_HELPER.getDisplay(questlogToast);
         if (display == null) {
@@ -105,6 +104,11 @@ public record ToastHandler(ToastsFilteringData filteringData, ToastConfigData to
             default -> type = FancyAdvancementType.TASK;
         }
 
+        if (filteringData.isTypeIgnored(type)) {
+            return;
+        }
+
+        info.cancel();
         fancyToastManager.add(display, toastData.getSoundIdByType(type));
     }
 }

@@ -1,11 +1,11 @@
 package net.bivrik.fancytoasts;
 
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.ClientModInitializer;
 
-public class FabricPlatform implements ModInitializer {
+public class FabricPlatform implements ClientModInitializer {
 
     @Override
-    public void onInitialize() {
+    public void onInitializeClient() {
         FancyToasts.getInstance().onModInit();
     }
 }

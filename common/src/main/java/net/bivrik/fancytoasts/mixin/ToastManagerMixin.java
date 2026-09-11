@@ -19,8 +19,6 @@ import net.bivrik.fancytoasts.core.Debug;
 public class ToastManagerMixin {
     @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
     private void onAddToast(Toast toast, CallbackInfo info) {
-        Debug.info("ToastManager.addToast called with: {}", toast != null ? toast.getClass().getName() : "null");
-
         FancyToastManager fancyToastManager = FancyToasts.getInstance().getToastManager();
         if (fancyToastManager == null) return;
 
