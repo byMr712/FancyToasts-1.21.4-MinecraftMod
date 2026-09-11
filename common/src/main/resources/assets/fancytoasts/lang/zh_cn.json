@@ -7,6 +7,7 @@
   "fancytoasts.title.reset_toasts_filtering": "重置提示过滤设置",
 
   "fancytoasts.label.creator_note": "來自 Bivrik 的愛與關懷，請盡情享用！", // machine translation
+  "fancytoasts.label.port_creator_note": "來自 Mr712 的愛與關懷，請盡情享用！", // machine translation
   "fancytoasts.label.unknown": "未知",
   "fancytoasts.label.custom": "自定义",
   "fancytoasts.label.reset_general_settings": "重置通用设置将会把所有现有设置恢复为默认值。确定要继续吗？",

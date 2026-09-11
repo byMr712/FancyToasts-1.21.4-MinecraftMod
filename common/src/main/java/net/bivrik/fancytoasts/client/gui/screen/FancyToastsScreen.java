@@ -30,11 +30,13 @@ public class FancyToastsScreen extends UniversalScreen {
     private static final Component TOASTS_FILTERING = Components.of("gui.toasts_filtering");
     private static final Component CREDITS = Components.of("gui.credits");
     private static final Component GITHUB_LABEL = Components.of("label.creator_note");
+    private static final Component PORT_GITHUB_LABEL = Components.of("label.port_creator_note");
     private static final Component DISCORD_TOOLTIP = Components.of("tooltip.discord");
     private static final Component BOOSTY_TOOLTIP = Components.of("tooltip.boosty");
     private static final Component YOUTUBE_TOOLTIP = Components.of("tooltip.youtube");
 
     private static final URI GITHUB_URI = URI.create("https://github.com/Bivrik");
+    private static final URI PORT_GITHUB_URI = URI.create("https://github.com/byMr712/FancyToasts-1.21.4-MinecraftMod");
     private static final URI DISCORD_URI = URI.create("https://discord.gg/9XuRDgbbZe");
     private static final URI BOOSTY_URI = URI.create("https://boosty.to/bivrik");
     private static final URI YOUTUBE_URI = URI.create("https://www.youtube.com/@modsEnjoyer");
@@ -47,6 +49,7 @@ public class FancyToastsScreen extends UniversalScreen {
     private Button toastsFilteringButton;
     private Button creditsButton;
     private PlainTextButton supportButton;
+    private PlainTextButton portSupportButton;
 
     public FancyToastsScreen(Screen parent) {
         super(TITLE, parent);
@@ -97,6 +100,11 @@ public class FancyToastsScreen extends UniversalScreen {
         Button.OnPress openGithubAction = ConfirmLinkScreen.confirmLink(this, GITHUB_URI);
         supportButton = new PlainTextButton(this.width - supportButtonWidth - 2, this.height - 9 - 1, supportButtonWidth, 9, GITHUB_LABEL, openGithubAction, this.font);
         addFWidget(supportButton);
+
+        int portSupportButtonWidth = this.font.width(PORT_GITHUB_LABEL);
+        Button.OnPress openPortGithubAction = ConfirmLinkScreen.confirmLink(this, PORT_GITHUB_URI);
+        portSupportButton = new PlainTextButton(2, this.height - 9 - 1, portSupportButtonWidth, 9, PORT_GITHUB_LABEL, openPortGithubAction, this.font);
+        addFWidget(portSupportButton);
     }
 
     @Override
