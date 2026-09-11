@@ -11,6 +11,8 @@ import net.bivrik.fancytoasts.core.event.ToastConfigDataEvent;
 import net.bivrik.fancytoasts.platform.Services;
 import net.bivrik.fancytoasts.platform.utility.AdvancementDisplay;
 import net.bivrik.fancytoasts.platform.utility.GuiContext;
+import net.bivrik.fancytoasts.client.gui.screen.UniversalScreen;
+import net.bivrik.fancytoasts.core.Constants;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -114,7 +116,34 @@ public class FancyToastManager {
         context.pop();
     }
 
+    public void showTestToast(AdvancementDisplay display, ResourceLocation textureId, ResourceLocation animationId, ResourceLocation soundId) {
+        if (display == null) {
+            return;
+        }
+
+        if (textureId != null && textureId.getPath().contains(Constants.CONFIG)) {
+            customTextureManager.registerInMinecraft(textureId);
+        }
+
+        removeCurrentToast();
+        toasts.clear();
+
+        FancyAdvancementToast toast = new FancyAdvancementToast(minecraft, generalConfigData, display,
+                soundId, textureId, animationId);
+
+        customTextureManager.addBeingUsed(textureId, toast);
+        currentToast = toast;
+        Debug.info("FancyToastManager: started displaying test toast '{}'", display.getTitle().getString());
+
+        if (generalConfigData.isJadeHiding()) {
+            Services.JADE.tryDisable();
+        }
+    }
+
     public void clear() {
+        for (FancyAdvancementToast toast : toasts) {
+            toast.discard();
+        }
         toasts.clear();
         customTextureManager.clear();
         removeCurrentToast();
@@ -130,8 +159,11 @@ public class FancyToastManager {
     }
 
     private void removeCurrentToast() {
-        customTextureManager.removeBeingUsed(currentToast);
-        currentToast = null;
+        if (currentToast != null) {
+            currentToast.discard();
+            customTextureManager.removeBeingUsed(currentToast);
+            currentToast = null;
+        }
     }
 
     public boolean isToastActive() {
@@ -143,7 +175,7 @@ public class FancyToastManager {
     }
 
     public boolean isScreenOpened() {
-        return minecraft.screen != null && !(minecraft.screen instanceof ChatScreen);
+        return minecraft.screen != null && !(minecraft.screen instanceof ChatScreen) && !(minecraft.screen instanceof UniversalScreen);
     }
 
     public boolean shouldRenderBehind() {

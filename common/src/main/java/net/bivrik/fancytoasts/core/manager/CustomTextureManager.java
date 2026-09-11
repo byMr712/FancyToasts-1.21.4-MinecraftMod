@@ -62,8 +62,12 @@ public class CustomTextureManager {
     }
 
     public void addBeingUsed(ResourceLocation id, FancyAdvancementToast toast) {
-        if (!id.getPath().contains(Constants.CONFIG)) {
+        if (id == null || !id.getPath().contains(Constants.CONFIG)) {
             return;
+        }
+
+        if (!isRegisteredMinecraft(id)) {
+            registerInMinecraft(id);
         }
 
         beingUsed.computeIfAbsent(id, list -> new ArrayList<>()).add(toast);
@@ -144,18 +148,19 @@ public class CustomTextureManager {
 
     public void clear() {
         ResourceLocation currentId = toastConfigData.getTextureId();
-        if (currentId.getPath().contains(Constants.CONFIG)) {
-            registeredInMinecraft.forEach(id -> {
-                if (currentId != id) textureManager.release(id);
+        if (currentId != null && currentId.getPath().contains(Constants.CONFIG)) {
+            new ArrayList<>(registeredInMinecraft).forEach(id -> {
+                if (!currentId.equals(id)) {
+                    textureManager.release(id);
+                    registeredInMinecraft.remove(id);
+                }
             });
         } else {
-            registeredInMinecraft.forEach(id -> {
-                textureManager.release(id);
-            });
+            new ArrayList<>(registeredInMinecraft).forEach(textureManager::release);
+            registeredInMinecraft.clear();
         }
 
         beingUsed.clear();
-        registeredInMinecraft.clear();
     }
 
     public void reload() {

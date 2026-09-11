@@ -70,8 +70,7 @@ public class FancyAdvancementToast {
         }
 
         if ((timeTicks += generalConfig.getAnimationSpeed()) > animation.getDuration()) {
-            animation.unsubscribeFromGeneralConfigDataEvent();
-            isDead = true;
+            discard();
             return;
         }
 
@@ -106,6 +105,13 @@ public class FancyAdvancementToast {
 
     private void playSound(ResourceLocation soundLocation, float volume) {
         playSound(SoundEvent.createVariableRangeEvent(soundLocation), volume);
+    }
+
+    public void discard() {
+        if (!isDead) {
+            animation.unsubscribeFromGeneralConfigDataEvent();
+            isDead = true;
+        }
     }
 
     public boolean isDead() {
