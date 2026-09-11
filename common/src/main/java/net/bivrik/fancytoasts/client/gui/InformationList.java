@@ -106,7 +106,7 @@ public class InformationList extends AbstractSelectionList<InformationList.Entry
     }
 
     @Override
-    protected int getScrollbarPosition() {
+    protected int scrollBarX() {
         return this.getX() + this.width - 8;
     }
 

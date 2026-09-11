@@ -16,6 +16,6 @@ public class UISoundInstance extends AbstractSoundInstance {
     }
 
     public static UISoundInstance create(SoundEvent sound, float volume, float pitch) {
-        return new UISoundInstance(sound.getLocation(), SoundSource.MASTER, SoundInstance.createUnseededRandom(), volume, pitch);
+        return new UISoundInstance(sound.location(), SoundSource.MASTER, SoundInstance.createUnseededRandom(), volume, pitch);
     }
 }

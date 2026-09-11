@@ -50,7 +50,7 @@ public class ResourceLocationList extends ObjectSelectionList<ResourceLocationLi
     }
 
     @Override
-    protected int getScrollbarPosition() {
+    protected int scrollBarX() {
         return this.getX() + this.width - 8;
     }
 

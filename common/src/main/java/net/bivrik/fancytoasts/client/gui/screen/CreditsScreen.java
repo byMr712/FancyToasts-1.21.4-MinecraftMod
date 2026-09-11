@@ -9,6 +9,7 @@ import net.bivrik.fancytoasts.platform.utility.Components;
 import net.bivrik.fancytoasts.platform.utility.ResourceLocations;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -44,8 +45,8 @@ public class CreditsScreen extends UniversalScreen {
         int height = this.height - offset * 2;
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR);
-        guiGraphics.blit(VIGNETTE_LOCATION, 0, 0, 0, 0, this.width, this.height, this.width, this.height);
-        guiGraphics.blit(VIGNETTE_LOCATION, 0, offset, 0, 0, width, height, width, height);
+        guiGraphics.blit(RenderType::guiTextured, VIGNETTE_LOCATION, 0, 0, 0, 0, this.width, this.height, this.width, this.height);
+        guiGraphics.blit(RenderType::guiTextured, VIGNETTE_LOCATION, 0, offset, 0, 0, width, height, width, height);
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
 
