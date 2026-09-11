@@ -26,12 +26,14 @@ public class FancyAdvancementToast {
     private final FancyToastAnimation animation;
     private final ResourceLocation toastSoundId;
     private final float volume;
+    private final AdvancementDisplay display;
 
     private float timeTicks;
     private boolean isDead;
     private int playedSoundsCount;
 
     public FancyAdvancementToast(Minecraft minecraft, GeneralConfigData generalConfig, AdvancementDisplay display, ResourceLocation soundId, ResourceLocation textureId, ResourceLocation animationId) {
+        this.display = display;
         this.generalConfig = generalConfig;
         this.soundManager = minecraft.getSoundManager();
 
@@ -116,5 +118,9 @@ public class FancyAdvancementToast {
 
     public int getHeight() {
         return HEIGHT;
+    }
+
+    public AdvancementDisplay getDisplay() {
+        return display;
     }
 }

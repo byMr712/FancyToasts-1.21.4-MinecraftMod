@@ -36,41 +36,66 @@ public class ToastsFilteringData extends ConfigData {
         this.fancyQuestToastsEnabled = fancyQuestToastsEnabled;
         this.fancyQuestlogToastsEnabled = fancyQuestlogToastsEnabled;
 
-        this.toastsToIgnore.addAll(toastsToIgnore);
-        for (String toastToIgnore : toastsToIgnore) {
-            if (toastToIgnore.endsWith("/...")) {
-                prefixMatches.add(toastToIgnore.replace("/...", ""));
-            } else {
-                exactMatches.add(toastToIgnore);
-            }
+        if (toastsToIgnore != null) {
+            this.toastsToIgnore.addAll(toastsToIgnore);
         }
-        this.typesToIgnore.putAll(typesToIgnore);
-        this.questTypesToIgnore.putAll(questTypesToIgnore);
+        populateMatches();
+        if (typesToIgnore != null) {
+            this.typesToIgnore.putAll(typesToIgnore);
+        }
+        if (questTypesToIgnore != null) {
+            this.questTypesToIgnore.putAll(questTypesToIgnore);
+        }
     }
 
-        public ToastsFilteringData() {
-            this(true, true, true, new ArrayList<>(),
-                    Map.of(
-                            FancyAdvancementType.TASK, false,
-                            FancyAdvancementType.GOAL, false,
-                            FancyAdvancementType.CHALLENGE, false),
-                    Map.of(
-                            QuestType.TASK, false,
-                            QuestType.QUEST, false,
-                            QuestType.CHAPTER, false,
-                            QuestType.BOOK, false)
-            );
+    public ToastsFilteringData() {
+        this(true, true, true, new ArrayList<>(),
+                Map.of(
+                        FancyAdvancementType.TASK, false,
+                        FancyAdvancementType.GOAL, false,
+                        FancyAdvancementType.CHALLENGE, false),
+                Map.of(
+                        QuestType.TASK, false,
+                        QuestType.QUEST, false,
+                        QuestType.CHAPTER, false,
+                        QuestType.BOOK, false)
+        );
+    }
+
+    public void populateMatches() {
+        exactMatches.clear();
+        prefixMatches.clear();
+        if (toastsToIgnore != null) {
+            for (String toastToIgnore : toastsToIgnore) {
+                if (toastToIgnore.endsWith("/...")) {
+                    prefixMatches.add(toastToIgnore.replace("/...", ""));
+                } else {
+                    exactMatches.add(toastToIgnore);
+                }
+            }
         }
+    }
+
+    @Override
+    public boolean isValid() {
+        populateMatches();
+        return super.isValid();
+    }
 
     public boolean isTypeIgnored(FancyAdvancementType type) {
-        return typesToIgnore.get(type);
+        if (typesToIgnore == null) return false;
+        Boolean ignored = typesToIgnore.get(type);
+        return ignored != null && ignored;
     }
 
     public boolean isQuestTypeIgnored(QuestType key) {
-        return questTypesToIgnore.getOrDefault(key, false);
+        if (questTypesToIgnore == null) return false;
+        Boolean ignored = questTypesToIgnore.get(key);
+        return ignored != null && ignored;
     }
 
     public boolean isToastIgnored(ResourceLocation toastLocation) {
+        if (toastLocation == null) return false;
         String toast = toastLocation.toString();
 
         if (exactMatches.contains(toast)) {

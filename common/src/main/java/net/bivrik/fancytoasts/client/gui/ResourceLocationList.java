@@ -189,13 +189,8 @@ public class ResourceLocationList extends ObjectSelectionList<ResourceLocationLi
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            if (Util.getMillis() - lastClickTime >= 250L) {
-                lastClickTime = Util.getMillis();
-                focus();
-            }
-            else {
-                select();
-            }
+            focus();
+            select();
 
             return super.mouseClicked(mouseX, mouseY, button);
         }

@@ -59,6 +59,7 @@ public class FancyToastManager {
                 soundId, toastConfigData.getTextureId(), toastConfigData.getAnimationId());
 
         addToast(toast);
+        Debug.info("FancyToastManager: added toast '{}' to queue (queue size: {})", display.getTitle().getString(), toasts.size());
 
         if (generalConfigData.isJadeHiding()) {
             Services.JADE.tryDisable();
@@ -74,6 +75,7 @@ public class FancyToastManager {
             currentToast.tick();
 
             if (currentToast.isDead()) {
+                Debug.info("FancyToastManager: toast finished displaying");
                 removeCurrentToast();
 
                 if (generalConfigData.isJadeHiding() && toasts.isEmpty()) {
@@ -88,6 +90,7 @@ public class FancyToastManager {
             FancyAdvancementToast nextToast = toasts.pollFirst();
             if (nextToast != null) {
                 currentToast = nextToast;
+                Debug.info("FancyToastManager: started displaying toast '{}'", nextToast.getDisplay().getTitle().getString());
             }
         }
     }
@@ -106,7 +109,7 @@ public class FancyToastManager {
 
         GuiContext context = new GuiContext(guiGraphics);
         context.push();
-        context.translate(xPos, yPos, 2400);
+        context.translate(xPos, yPos, 800.0f);
         currentToast.render(guiGraphics, partialTick);
         context.pop();
     }

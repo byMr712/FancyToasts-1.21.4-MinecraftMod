@@ -13,10 +13,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = ToastManager.class, priority = 2000)
+import net.bivrik.fancytoasts.core.Debug;
+
+@Mixin(value = ToastManager.class, priority = 500)
 public class ToastManagerMixin {
     @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
     private void onAddToast(Toast toast, CallbackInfo info) {
+        Debug.info("ToastManager.addToast called with: {}", toast != null ? toast.getClass().getName() : "null");
+
         FancyToastManager fancyToastManager = FancyToasts.getInstance().getToastManager();
         if (fancyToastManager == null) return;
 
