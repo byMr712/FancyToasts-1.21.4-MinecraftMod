@@ -189,8 +189,10 @@ public class ResourceLocationList extends ObjectSelectionList<ResourceLocationLi
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            focus();
-            select();
+            if (button == 0) {
+                focus();
+                select();
+            }
 
             return super.mouseClicked(mouseX, mouseY, button);
         }
@@ -242,6 +244,11 @@ public class ResourceLocationList extends ObjectSelectionList<ResourceLocationLi
 
             int nameX = x + 3;
             int nameY = y + 3;
+
+            if (nameLines.isEmpty()) {
+                return;
+            }
+
             FormattedCharSequence nameFirstLine = nameLines.getFirst();
 
             if (nameLines.size() == 1) {
@@ -253,7 +260,7 @@ public class ResourceLocationList extends ObjectSelectionList<ResourceLocationLi
             }
 
             if (isConfig) {
-                guiGraphics.drawString(font, Component.literal("c"),  + width - 10, nameY, Color.LIGHT_GRAY.getARGB());
+                guiGraphics.drawString(font, Component.literal("c"), x + width - 10, nameY, Color.LIGHT_GRAY.getARGB());
             }
         }
     }

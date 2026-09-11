@@ -71,6 +71,10 @@ public class CustomTextureManager {
     }
 
     public void removeBeingUsed(FancyAdvancementToast toast) {
+        if (toast == null) {
+            return;
+        }
+
         ResourceLocation id = null;
         for (Map.Entry<ResourceLocation, List<FancyAdvancementToast>> entry : beingUsed.entrySet()) {
             if (entry.getValue().contains(toast)) {
@@ -112,7 +116,6 @@ public class CustomTextureManager {
             textureManager.register(id, dynamicTexture);
             registeredInMinecraft.add(id);
 
-            image.close();
             LOGGER.info("Registered in Minecraft: {}; {}", id, dynamicTextureName);
         } catch (IOException e) {
             throw new RuntimeException("An error occurred while registering custom texture in Minecraft: ", e);

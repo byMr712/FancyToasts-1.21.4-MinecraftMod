@@ -153,16 +153,15 @@ public class ToastConfigScreen extends UniversalScreen {
         ToastConfigData data = toastConfigData.copy();
         if (!data.equals(configManager.getToastConfigData())) {
             save(data);
-        } else {
-            this.toParentScreen();
         }
+        this.toParentScreen();
     }
 
     private void save(ToastConfigData data) {
         ResourceLocation textureId = data.getTextureId();
 
         customTextureManager.releaseUnusedTexturesFromMinecraft();
-        if (textureId.toLanguageKey().contains(Constants.CONFIG)) {
+        if (textureId.getPath().contains(Constants.CONFIG)) {
             customTextureManager.registerInMinecraft(textureId);
         }
 
@@ -241,6 +240,7 @@ public class ToastConfigScreen extends UniversalScreen {
     }
 
     private void onSelectedEntry(ResourceLocation location) {
+        selectedDisplayData = settingType.getDisplayData(location);
         settingType.apply(this, location);
 
         informationList$updateSelected(location, true);

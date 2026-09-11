@@ -47,6 +47,8 @@ public class GuiContext {
     }
 
     public void scaleAround(float sx, float sy, float ox, float oy) {
+        sx = Math.abs(sx) < 0.001f ? (sx < 0 ? -0.001f : 0.001f) : sx;
+        sy = Math.abs(sy) < 0.001f ? (sy < 0 ? -0.001f : 0.001f) : sy;
         stack.translate(ox, oy, 0);
         stack.scale(sx, sy, 1);
         stack.translate(-ox, -oy, 0);

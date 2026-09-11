@@ -212,9 +212,8 @@ public class GeneralConfigScreen extends UniversalScreen {
         GeneralConfigData data = generalConfigData.copy();
         if (!data.equals(configManager.getGeneralConfigData())) {
             save(data);
-        } else {
-            this.toParentScreen();
         }
+        this.toParentScreen();
     }
 
     private void save(GeneralConfigData data) {

@@ -125,9 +125,8 @@ public class ToastsFilteringScreen extends UniversalScreen {
         ToastsFilteringData data = toastsFilteringData.copy();
         if (!data.equals(configManager.getToastsFilteringData())) {
             save(data);
-        } else {
-            this.toParentScreen();
         }
+        this.toParentScreen();
     }
 
     private void save(ToastsFilteringData data) {
