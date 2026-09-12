@@ -12,8 +12,8 @@ public class FileHelper {
     public static boolean tryCreateDirectory(File directory) {
         if (directory.exists()) return false;
 
-        if (!directory.mkdir()) {
-            Debug.error("Security manager does not let create directory '{}'", directory.getPath());
+        if (!directory.mkdirs() && !directory.exists()) {
+            Debug.error("Failed to create directory '{}'", directory.getPath());
             return false;
         }
 

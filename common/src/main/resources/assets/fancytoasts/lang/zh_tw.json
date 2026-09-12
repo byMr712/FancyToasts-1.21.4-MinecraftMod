@@ -7,6 +7,7 @@
   "fancytoasts.title.reset_toasts_filtering": "重設提示過濾設定",
 
   "fancytoasts.label.creator_note": "来自 Bivrik 的爱心与关怀，祝您玩得开心！", // machine translation
+  "fancytoasts.label.port_creator_note": "来自 Mr712 的爱心与关怀，祝您玩得开心！", // machine translation
   "fancytoasts.label.unknown": "未知",
   "fancytoasts.label.custom": "自訂",
   "fancytoasts.label.reset_general_settings": "重設一般設定將會清除所有現有設定並恢復為預設值。確定要這麼做嗎？",

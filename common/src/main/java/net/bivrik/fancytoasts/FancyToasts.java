@@ -15,7 +15,6 @@ import net.bivrik.fancytoasts.platform.utility.Components;
 import net.bivrik.fancytoasts.utility.DefaultLocations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -86,7 +85,7 @@ public final class FancyToasts {
     }
 
     /**
-     * Some mods trigger Minecraft's ToastManager {@link ToastComponent#render(GuiGraphics)} on Minecraft initialization. Therefore, it can return null during this phase, and to avoid immediate crash, always check for null.
+     * Some mods trigger Minecraft's ToastManager on Minecraft initialization. Therefore, it can return null during this phase, and to avoid immediate crash, always check for null.
      * @return {@link FancyToastManager}
      */
     public @Nullable FancyToastManager getToastManager() {

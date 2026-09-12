@@ -69,7 +69,7 @@ public class DisplayData {
 
     @Override
     public String toString() {
-        return String.format("DisplayData{name='%s', author='%s', description='%s'}", displayAuthor.getString(), displayAuthor.getString(), displayDescription.getString());
+        return String.format("DisplayData{name='%s', author='%s', description='%s'}", displayName.getString(), displayAuthor.getString(), displayDescription.getString());
     }
 
     public record DTO(String name, String author, String description) {}

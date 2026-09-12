@@ -57,5 +57,5 @@ plugins {
 rootProject.name = 'FancyToasts'
 include 'common'
 include 'fabric'
-include 'neoforge'
-include 'forge'
+// include 'neoforge'
+// include 'forge'

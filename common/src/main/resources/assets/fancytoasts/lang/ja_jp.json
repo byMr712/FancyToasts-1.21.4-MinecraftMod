@@ -7,6 +7,7 @@
   "fancytoasts.title.reset_toasts_filtering": "トーストフィルタリングをリセット", // machine translation
 
   "fancytoasts.label.creator_note": "Bivrikからの愛と心を込めてお届けします。どうぞお楽しみください！", // machine translation
+  "fancytoasts.label.port_creator_note": "Mr712からの愛と心を込めてお届けします。どうぞお楽しみください！", // machine translation
   "fancytoasts.label.unknown": "不明",
   "fancytoasts.label.custom": "カスタム",
   "fancytoasts.label.reset_general_settings": "一般設定をリセットすると、既存の設定が標準設定に戻ります。実行してもよろしいですか？", // machine translation

@@ -36,14 +36,14 @@ public class ToastConfigData extends ConfigData {
     public ToastConfigData() {
         this(DefaultLocations.Textures.VANILLA, DefaultLocations.Animations.STANDARD,
                 Map.of(
-                        FancyAdvancementType.TASK, SoundEvents.NOTE_BLOCK_CHIME.value().getLocation(),
-                        FancyAdvancementType.GOAL, SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR.getLocation(),
-                        FancyAdvancementType.CHALLENGE, SoundEvents.UI_TOAST_CHALLENGE_COMPLETE.getLocation()),
+                        FancyAdvancementType.TASK, SoundEvents.NOTE_BLOCK_CHIME.value().location(),
+                        FancyAdvancementType.GOAL, SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR.location(),
+                        FancyAdvancementType.CHALLENGE, SoundEvents.UI_TOAST_CHALLENGE_COMPLETE.location()),
                 Map.of(
-                        QuestType.TASK, SoundEvents.NOTE_BLOCK_BELL.value().getLocation(),
-                        QuestType.QUEST, SoundEvents.NOTE_BLOCK_CHIME.value().getLocation(),
-                        QuestType.CHAPTER, SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR.getLocation(),
-                        QuestType.BOOK, SoundEvents.UI_TOAST_CHALLENGE_COMPLETE.getLocation())
+                        QuestType.TASK, SoundEvents.NOTE_BLOCK_BELL.value().location(),
+                        QuestType.QUEST, SoundEvents.NOTE_BLOCK_CHIME.value().location(),
+                        QuestType.CHAPTER, SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR.location(),
+                        QuestType.BOOK, SoundEvents.UI_TOAST_CHALLENGE_COMPLETE.location())
         );
     }
 

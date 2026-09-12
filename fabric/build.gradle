@@ -20,39 +20,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
     modImplementation("com.terraformersmc:modmenu:${project.fabric_modmenu_version}")
-    modImplementation("maven.modrinth:jade:${project.fabric_jade_version}")
-
-    // Aether compatibility
-    def aether_version = "maven.modrinth:aether:${project.fabric_aether_version}"
-    modCompileOnly(aether_version)
-    if (project.aether_enable.toBoolean()) {
-        modRuntimeOnly(aether_version)
-        modRuntimeOnly("maven.modrinth:accessories:${project.fabric_accessories_version}")
-        modRuntimeOnly("maven.modrinth:owo-lib:${project.fabric_owo_version}")
-    }
-
-    // FTB Quests compatibility
-    def ftbquests_version = "curse.maven:ftb-quests-fabric-438496:${project.fabric_ftb_quests_version}"
-    def ftblibrary_version = "curse.maven:ftb-library-fabric-438495:${project.fabric_ftb_library_version}"
-    def architectury_version = "curse.maven:architectury-api-419699:${project.fabric_architectury_version}"
-    modCompileOnly(ftbquests_version)
-    modCompileOnly(ftblibrary_version)
-    modCompileOnly(architectury_version)
-    if (project.ftbquests_enable.toBoolean()) {
-        modRuntimeOnly(ftbquests_version)
-        modRuntimeOnly(ftblibrary_version)
-        modRuntimeOnly(architectury_version)
-        modRuntimeOnly("curse.maven:ftb-teams-fabric-438497:${project.fabric_ftb_teams_version}")
-        modRuntimeOnly("teamreborn:energy:${project.fabric_team_reborn_energy_version}")
-    }
-
-    // Questlog compatibility
-    def questlog_version = "maven.modrinth:questlog:${project.fabric_questlog_version}"
-    modCompileOnly(questlog_version)
-    if (project.questlog_enable.toBoolean()) {
-        modRuntimeOnly(questlog_version)
-        modRuntimeOnly("maven.modrinth:cloth-config:${project.fabric_cloth_config_version}")
-    }
+    modCompileOnly("maven.modrinth:jade:${project.fabric_jade_version}")
 }
 
 remapJar {

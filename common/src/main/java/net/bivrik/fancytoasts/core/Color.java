@@ -118,7 +118,7 @@ public final class Color {
      * @return 32-bit representation of color
      */
     public static int toARGB(int a, int r, int g, int b) {
-        return ((a << 24) & 0xFF) | ((r << 16) & 0xFF) | ((g << 8) & 0xFF) | (b & 0xFF);
+        return ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
     }
 
     /**
@@ -186,7 +186,7 @@ public final class Color {
      */
     public static Color PURPLE = Color.fromARGB(0xFFFA3CFA);
     /**
-     * The White color (1.0f, 0.132f, 1.0f, 1.0f)
+     * The Cyan color (1.0f, 0.132f, 1.0f, 1.0f)
      */
     public static Color CYAN = Color.fromARGB(0xFF22FFFF);
 }

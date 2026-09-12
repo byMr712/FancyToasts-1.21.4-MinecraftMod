@@ -15,11 +15,15 @@ import net.bivrik.fancytoasts.core.Easing;
 import net.bivrik.fancytoasts.core.event.ToastConfigDataEvent;
 import net.bivrik.fancytoasts.core.manager.ConfigManager;
 import net.bivrik.fancytoasts.core.manager.CustomTextureManager;
+import net.bivrik.fancytoasts.core.manager.FancyToastManager;
+import net.bivrik.fancytoasts.platform.utility.AdvancementDisplay;
 import net.bivrik.fancytoasts.platform.utility.Components;
 import net.bivrik.fancytoasts.platform.utility.FancyAdvancementType;
 import net.bivrik.fancytoasts.utility.file.Paths;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -42,6 +46,7 @@ public class ToastConfigScreen extends UniversalScreen {
     private static final Component RELOAD_CUSTOMS_TOOLTIP = Components.of("tooltip.reload_customs");
 
     private final ToastConfigData toastConfigData;
+    private final ToastConfigData initialConfigData;
     private final ConfigManager configManager;
     private final CustomTextureManager customTextureManager;
 
@@ -68,6 +73,7 @@ public class ToastConfigScreen extends UniversalScreen {
 
         this.configManager = FancyToasts.getInstance().getConfigManager();
         this.toastConfigData = configManager.getToastConfigData();
+        this.initialConfigData = this.toastConfigData.copy();
         this.customTextureManager = FancyToasts.getInstance().getCustomTextureManager();
         this.customTextureManager.reload();
 
@@ -151,18 +157,17 @@ public class ToastConfigScreen extends UniversalScreen {
 
     private void done() {
         ToastConfigData data = toastConfigData.copy();
-        if (!data.equals(configManager.getToastConfigData())) {
+        if (!data.equals(initialConfigData)) {
             save(data);
-        } else {
-            this.toParentScreen();
         }
+        this.toParentScreen();
     }
 
     private void save(ToastConfigData data) {
         ResourceLocation textureId = data.getTextureId();
 
         customTextureManager.releaseUnusedTexturesFromMinecraft();
-        if (textureId.toLanguageKey().contains(Constants.CONFIG)) {
+        if (textureId.getPath().contains(Constants.CONFIG)) {
             customTextureManager.registerInMinecraft(textureId);
         }
 
@@ -234,6 +239,7 @@ public class ToastConfigScreen extends UniversalScreen {
         advancementType = type;
 
         informationList$updateOnReload();
+        triggerPreviewToast();
     }
 
     private void informationList$updateOnReload() {
@@ -241,9 +247,44 @@ public class ToastConfigScreen extends UniversalScreen {
     }
 
     private void onSelectedEntry(ResourceLocation location) {
+        selectedDisplayData = settingType.getDisplayData(location);
         settingType.apply(this, location);
 
         informationList$updateSelected(location, true);
+        triggerPreviewToast();
+    }
+
+    private void triggerPreviewToast() {
+        FancyToastManager toastManager = FancyToasts.getInstance().getToastManager();
+        if (toastManager == null) {
+            return;
+        }
+
+        ItemStack icon = switch (advancementType) {
+            case TASK -> Items.EXPERIENCE_BOTTLE.getDefaultInstance();
+            case GOAL -> Items.GOLDEN_APPLE.getDefaultInstance();
+            case CHALLENGE -> Items.NETHER_STAR.getDefaultInstance();
+        };
+
+        Component title = Component.translatableWithFallback("fancytoasts.toast.test_advancement.title", "Пример достижения");
+        Component description = Component.translatableWithFallback("fancytoasts.toast.test_advancement.description", "Пример описания достижения");
+        Component announcement = Component.translatable("advancements.toast." + advancementType.getName());
+
+        AdvancementDisplay display = new AdvancementDisplay(
+                icon,
+                title,
+                description,
+                announcement,
+                advancementType.getTitleColor(),
+                advancementType.getDescriptionColor(),
+                advancementType.getConventionalType()
+        );
+
+        ResourceLocation textureId = toastConfigData.getTextureId();
+        ResourceLocation animationId = toastConfigData.getAnimationId();
+        ResourceLocation soundId = toastConfigData.getSoundIdByType(advancementType);
+
+        toastManager.showTestToast(display, textureId, animationId, soundId);
     }
 
     private void onFocusedEntry(ResourceLocation location) {

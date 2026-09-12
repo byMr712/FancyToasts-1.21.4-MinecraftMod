@@ -1,10 +1,10 @@
 package net.bivrik.fancytoasts.platform.utility;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.bivrik.fancytoasts.utility.TextureUV;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
 public class GuiContext {
@@ -47,6 +47,8 @@ public class GuiContext {
     }
 
     public void scaleAround(float sx, float sy, float ox, float oy) {
+        sx = Math.abs(sx) < 0.001f ? (sx < 0 ? -0.001f : 0.001f) : sx;
+        sy = Math.abs(sy) < 0.001f ? (sy < 0 ? -0.001f : 0.001f) : sy;
         stack.translate(ox, oy, 0);
         stack.scale(sx, sy, 1);
         stack.translate(-ox, -oy, 0);
@@ -57,22 +59,11 @@ public class GuiContext {
     }
 
     public void drawGUITexture(ResourceLocation textureLocation, int x, int y, int width, int height, TextureUV uv, int textureWidth, int textureHeight) {
-        guiGraphics.blit(textureLocation, x, y, uv.u(), uv.v(), width, height, textureWidth, textureHeight);
+        guiGraphics.blit(RenderType::guiTextured, textureLocation, x, y, uv.u(), uv.v(), width, height, textureWidth, textureHeight);
     }
 
     public void drawGUITexture(ResourceLocation textureLocation, int x, int y, int width, int height, TextureUV uv, int textureWidth, int textureHeight, int color) {
-        if (color == WHITE) {
-            drawGUITexture(textureLocation, x, y, width, height, uv, textureWidth, textureHeight);
-            return;
-        }
-
-        float alpha = ((color >> 24) & 0xFF) / 255.0f;
-
-        RenderSystem.enableBlend();
-        guiGraphics.setColor(1, 1, 1, alpha);
-        guiGraphics.blit(textureLocation, x, y, uv.u(), uv.v(), width, height, textureWidth, textureHeight);
-        guiGraphics.setColor(1, 1, 1, 1);
-        RenderSystem.disableBlend();
+        guiGraphics.blit(RenderType::guiTextured, textureLocation, x, y, uv.u(), uv.v(), width, height, textureWidth, textureHeight, color);
     }
 
     public void drawGUITexture(ResourceLocation textureLocation, int x, int y, int width, int height, TextureUV uv, int color) {
@@ -80,7 +71,7 @@ public class GuiContext {
     }
 
     public void drawSprite(ResourceLocation spriteLocation, int x, int y, int width, int height) {
-        guiGraphics.blitSprite(spriteLocation, x, y, width, height);
+        guiGraphics.blitSprite(RenderType::guiTextured, spriteLocation, x, y, width, height);
     }
 
     public void fill(int x, int y, int width, int height, int color) {

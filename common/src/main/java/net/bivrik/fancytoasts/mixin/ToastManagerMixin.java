@@ -5,14 +5,18 @@ import net.bivrik.fancytoasts.core.manager.ConfigManager;
 import net.bivrik.fancytoasts.core.manager.FancyToastManager;
 import net.bivrik.fancytoasts.platform.Services;
 import net.bivrik.fancytoasts.platform.utility.ToastHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = ToastComponent.class, priority = 2000)
-public class ToastComponentMixin {
+import net.bivrik.fancytoasts.core.Debug;
+
+@Mixin(value = ToastManager.class, priority = 500)
+public class ToastManagerMixin {
     @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
     private void onAddToast(Toast toast, CallbackInfo info) {
         FancyToastManager fancyToastManager = FancyToasts.getInstance().getToastManager();
@@ -28,6 +32,17 @@ public class ToastComponentMixin {
             toastHandler.handleFTBQuestsToast(toast, info);
         } else if (Services.QUESTLOG_HELPER.isQuest(toast)) {
             toastHandler.handleQuestlogToast(toast, info);
+        }
+    }
+
+    @Inject(at = @At("TAIL"), method = "render")
+    private void onRender(GuiGraphics guiGraphics, CallbackInfo info) {
+        FancyToastManager fancyToastManager = FancyToasts.getInstance().getToastManager();
+        if (fancyToastManager == null) return;
+
+        if (!fancyToastManager.shouldRenderBehind()) {
+            float partialTick = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+            fancyToastManager.render(guiGraphics, partialTick);
         }
     }
 

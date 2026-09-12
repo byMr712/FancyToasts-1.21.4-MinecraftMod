@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.bivrik.fancytoasts.client.config.data.ToastsFilteringData;
 import net.bivrik.fancytoasts.client.toast.IAdvancementAccessor;
+import net.bivrik.fancytoasts.core.Debug;
 import net.bivrik.fancytoasts.core.manager.FancyToastManager;
 import net.bivrik.fancytoasts.platform.Services;
 import net.minecraft.advancements.AdvancementHolder;
@@ -16,13 +17,18 @@ import net.minecraft.client.gui.components.toasts.Toast;
 public record ToastHandler(ToastsFilteringData filteringData, ToastConfigData toastData, FancyToastManager fancyToastManager) {
     public void handleAdvancementToast(AdvancementToast advancementToast, CallbackInfo info) {
         if (!filteringData.isFancyAdvancementToastsEnabled()) {
+            Debug.info("Fancy advancement toasts are disabled, letting vanilla toast display");
             return;
         }
-        info.cancel();
 
         AdvancementHolder advancementHolder = ((IAdvancementAccessor) advancementToast).getAdvancementHolder();
+        if (advancementHolder == null) {
+            Debug.warn("AdvancementToast has null AdvancementHolder");
+            return;
+        }
         DisplayInfo vanillaDisplay = advancementHolder.value().display().orElse(null);
         if (vanillaDisplay == null) {
+            Debug.info("Advancement {} has no display info, skipping fancy toast", advancementHolder.id());
             return;
         }
 
@@ -33,9 +39,17 @@ public record ToastHandler(ToastsFilteringData filteringData, ToastConfigData to
             default -> type = FancyAdvancementType.TASK;
         }
 
-        if (filteringData.isTypeIgnored(type) || filteringData.isToastIgnored(advancementHolder.id())) {
+        if (filteringData.isTypeIgnored(type)) {
+            Debug.info("Advancement type {} is ignored in filtering, letting vanilla toast display", type);
             return;
         }
+        if (filteringData.isToastIgnored(advancementHolder.id())) {
+            Debug.info("Advancement {} is ignored in filtering, letting vanilla toast display", advancementHolder.id());
+            return;
+        }
+
+        info.cancel();
+        Debug.info("Intercepted AdvancementToast: '{}' ({})", vanillaDisplay.getTitle().getString(), advancementHolder.id());
 
         ResourceLocation soundId = toastData.getSoundIdByType(type);
         if (Services.AETHER_HELPER.isLoaded()) {
@@ -58,7 +72,6 @@ public record ToastHandler(ToastsFilteringData filteringData, ToastConfigData to
         if (!filteringData.isFancyQuestToastsEnabled()) {
             return;
         }
-        info.cancel();
 
         QuestDisplay display = (QuestDisplay) Services.FTB_QUESTS.getDisplayInfo(questToast);
         if (display == null) {
@@ -70,6 +83,7 @@ public record ToastHandler(ToastsFilteringData filteringData, ToastConfigData to
             return;
         }
 
+        info.cancel();
         fancyToastManager.add(display, toastData.getSoundIdByQuestType(type));
     }
 
@@ -77,7 +91,6 @@ public record ToastHandler(ToastsFilteringData filteringData, ToastConfigData to
         if (!filteringData.isFancyQuestlogToastsEnabled()) {
             return;
         }
-        info.cancel();
 
         AdvancementDisplay display = Services.QUESTLOG_HELPER.getDisplay(questlogToast);
         if (display == null) {
@@ -91,6 +104,11 @@ public record ToastHandler(ToastsFilteringData filteringData, ToastConfigData to
             default -> type = FancyAdvancementType.TASK;
         }
 
+        if (filteringData.isTypeIgnored(type)) {
+            return;
+        }
+
+        info.cancel();
         fancyToastManager.add(display, toastData.getSoundIdByType(type));
     }
 }

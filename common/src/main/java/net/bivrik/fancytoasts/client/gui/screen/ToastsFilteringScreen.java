@@ -42,6 +42,7 @@ public class ToastsFilteringScreen extends UniversalScreen {
 
     private final ConfigManager configManager;
     private ToastsFilteringData toastsFilteringData;
+    private ToastsFilteringData initialFilteringData;
 
     private boolean isSaved;
     private long savedFeedbackStartTime;
@@ -59,6 +60,7 @@ public class ToastsFilteringScreen extends UniversalScreen {
 
         this.configManager = FancyToasts.getInstance().getConfigManager();
         this.toastsFilteringData = configManager.getToastsFilteringData();
+        this.initialFilteringData = this.toastsFilteringData.copy();
     }
 
     @Override
@@ -117,17 +119,17 @@ public class ToastsFilteringScreen extends UniversalScreen {
         }
 
         toastsFilteringData = new ToastsFilteringData();
+        initialFilteringData = toastsFilteringData.copy();
         save(toastsFilteringData.copy());
         this.rebuildWidgets();
     }
 
     private void done() {
         ToastsFilteringData data = toastsFilteringData.copy();
-        if (!data.equals(configManager.getToastsFilteringData())) {
+        if (!data.equals(initialFilteringData)) {
             save(data);
-        } else {
-            this.toParentScreen();
         }
+        this.toParentScreen();
     }
 
     private void save(ToastsFilteringData data) {

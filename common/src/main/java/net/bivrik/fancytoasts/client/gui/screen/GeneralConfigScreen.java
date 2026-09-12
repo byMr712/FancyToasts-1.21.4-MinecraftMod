@@ -67,6 +67,7 @@ public class GeneralConfigScreen extends UniversalScreen {
 
     private final ConfigManager configManager;
     private GeneralConfigData generalConfigData;
+    private GeneralConfigData initialConfigData;
 
     private boolean isSaved;
     private long savedFeedbackStartTime;
@@ -97,6 +98,7 @@ public class GeneralConfigScreen extends UniversalScreen {
 
         this.configManager = FancyToasts.getInstance().getConfigManager();
         this.generalConfigData = configManager.getGeneralConfigData();
+        this.initialConfigData = this.generalConfigData.copy();
     }
 
     @Override
@@ -204,17 +206,17 @@ public class GeneralConfigScreen extends UniversalScreen {
         }
 
         generalConfigData = new GeneralConfigData();
+        initialConfigData = generalConfigData.copy();
         save(generalConfigData.copy());
         this.rebuildWidgets();
     }
 
     private void done() {
         GeneralConfigData data = generalConfigData.copy();
-        if (!data.equals(configManager.getGeneralConfigData())) {
+        if (!data.equals(initialConfigData)) {
             save(data);
-        } else {
-            this.toParentScreen();
         }
+        this.toParentScreen();
     }
 
     private void save(GeneralConfigData data) {

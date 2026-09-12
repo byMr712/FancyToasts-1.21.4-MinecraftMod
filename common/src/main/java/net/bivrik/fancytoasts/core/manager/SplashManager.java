@@ -22,7 +22,7 @@ public class SplashManager {
     private static final Random RANDOM = new Random();
 
     private final User user;
-    private List<String> splashes;
+    private List<String> splashes = java.util.Collections.emptyList();
 
     public SplashManager(Minecraft minecraft) {
         user = minecraft.getUser();
@@ -34,8 +34,9 @@ public class SplashManager {
         try {
             Optional<Resource> resource = resourceManager.getResource(LOCATION);
             if (resource.isPresent()) {
-                BufferedReader reader = new BufferedReader(resource.get().openAsReader());
-                splashes = reader.lines().toList();
+                try (BufferedReader reader = new BufferedReader(resource.get().openAsReader())) {
+                    splashes = reader.lines().toList();
+                }
             }
             else {
                 LOGGER.error("Could not start reading, because it does not exist");
@@ -46,7 +47,7 @@ public class SplashManager {
     }
 
     public String getSplash() {
-        if (!splashes.isEmpty()) {
+        if (splashes != null && !splashes.isEmpty()) {
             String splash = splashes.get(RANDOM.nextInt(splashes.size()));
 
             if (splash.contains("{user.name}")) {

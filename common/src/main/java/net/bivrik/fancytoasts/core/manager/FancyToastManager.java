@@ -11,6 +11,8 @@ import net.bivrik.fancytoasts.core.event.ToastConfigDataEvent;
 import net.bivrik.fancytoasts.platform.Services;
 import net.bivrik.fancytoasts.platform.utility.AdvancementDisplay;
 import net.bivrik.fancytoasts.platform.utility.GuiContext;
+import net.bivrik.fancytoasts.client.gui.screen.UniversalScreen;
+import net.bivrik.fancytoasts.core.Constants;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -59,6 +61,7 @@ public class FancyToastManager {
                 soundId, toastConfigData.getTextureId(), toastConfigData.getAnimationId());
 
         addToast(toast);
+        Debug.info("FancyToastManager: added toast '{}' to queue (queue size: {})", display.getTitle().getString(), toasts.size());
 
         if (generalConfigData.isJadeHiding()) {
             Services.JADE.tryDisable();
@@ -67,13 +70,10 @@ public class FancyToastManager {
 
     public void tick() {
         if (isToastActive()) {
-            if (generalConfigData.isJadeHiding() && Services.JADE.isEnabled()) {
-                Services.JADE.tryEnable();
-            }
-
             currentToast.tick();
 
             if (currentToast.isDead()) {
+                Debug.info("FancyToastManager: toast finished displaying");
                 removeCurrentToast();
 
                 if (generalConfigData.isJadeHiding() && toasts.isEmpty()) {
@@ -88,6 +88,7 @@ public class FancyToastManager {
             FancyAdvancementToast nextToast = toasts.pollFirst();
             if (nextToast != null) {
                 currentToast = nextToast;
+                Debug.info("FancyToastManager: started displaying toast '{}'", nextToast.getDisplay().getTitle().getString());
             }
         }
     }
@@ -106,12 +107,39 @@ public class FancyToastManager {
 
         GuiContext context = new GuiContext(guiGraphics);
         context.push();
-        context.translate(xPos, yPos, 2400);
+        context.translate(xPos, yPos, 800.0f);
         currentToast.render(guiGraphics, partialTick);
         context.pop();
     }
 
+    public void showTestToast(AdvancementDisplay display, ResourceLocation textureId, ResourceLocation animationId, ResourceLocation soundId) {
+        if (display == null) {
+            return;
+        }
+
+        if (textureId != null && textureId.getPath().contains(Constants.CONFIG)) {
+            customTextureManager.registerInMinecraft(textureId);
+        }
+
+        removeCurrentToast();
+        toasts.clear();
+
+        FancyAdvancementToast toast = new FancyAdvancementToast(minecraft, generalConfigData, display,
+                soundId, textureId, animationId);
+
+        customTextureManager.addBeingUsed(textureId, toast);
+        currentToast = toast;
+        Debug.info("FancyToastManager: started displaying test toast '{}'", display.getTitle().getString());
+
+        if (generalConfigData.isJadeHiding()) {
+            Services.JADE.tryDisable();
+        }
+    }
+
     public void clear() {
+        for (FancyAdvancementToast toast : toasts) {
+            toast.discard();
+        }
         toasts.clear();
         customTextureManager.clear();
         removeCurrentToast();
@@ -127,8 +155,11 @@ public class FancyToastManager {
     }
 
     private void removeCurrentToast() {
-        customTextureManager.removeBeingUsed(currentToast);
-        currentToast = null;
+        if (currentToast != null) {
+            currentToast.discard();
+            customTextureManager.removeBeingUsed(currentToast);
+            currentToast = null;
+        }
     }
 
     public boolean isToastActive() {
@@ -140,7 +171,7 @@ public class FancyToastManager {
     }
 
     public boolean isScreenOpened() {
-        return minecraft.screen != null && !(minecraft.screen instanceof ChatScreen);
+        return minecraft.screen != null && !(minecraft.screen instanceof ChatScreen) && !(minecraft.screen instanceof UniversalScreen);
     }
 
     public boolean shouldRenderBehind() {

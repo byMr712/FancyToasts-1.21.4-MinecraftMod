@@ -18,8 +18,12 @@ public class Components {
      * @return string key used for translation
      * @author Furglitch
      */
-    public static String extractKey(Component translatable)
-    {
+    public static String extractKey(Component translatable) {
+        if (translatable == null) return null;
+        if (translatable.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents contents) {
+            return contents.getKey();
+        }
+
         String s = translatable.toString();
         String marker = "key='";
         int startIndex = s.indexOf(marker);

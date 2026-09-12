@@ -26,12 +26,14 @@ public class FancyAdvancementToast {
     private final FancyToastAnimation animation;
     private final ResourceLocation toastSoundId;
     private final float volume;
+    private final AdvancementDisplay display;
 
     private float timeTicks;
     private boolean isDead;
     private int playedSoundsCount;
 
     public FancyAdvancementToast(Minecraft minecraft, GeneralConfigData generalConfig, AdvancementDisplay display, ResourceLocation soundId, ResourceLocation textureId, ResourceLocation animationId) {
+        this.display = display;
         this.generalConfig = generalConfig;
         this.soundManager = minecraft.getSoundManager();
 
@@ -68,8 +70,7 @@ public class FancyAdvancementToast {
         }
 
         if ((timeTicks += generalConfig.getAnimationSpeed()) > animation.getDuration()) {
-            animation.unsubscribeFromGeneralConfigDataEvent();
-            isDead = true;
+            discard();
             return;
         }
 
@@ -94,9 +95,11 @@ public class FancyAdvancementToast {
 
     private void playSound(SoundEvent sound, float volume) {
         float pitch = 1.0f;
-        float pitchRandomness = generalConfig.getPitchRandomness();
-        if (pitchRandomness != 0.0f) {
-            pitch = RANDOM.nextFloat(pitch - pitchRandomness, pitch + pitchRandomness);
+        float pitchRandomness = Math.abs(generalConfig.getPitchRandomness());
+        if (pitchRandomness > 0.0f) {
+            float minPitch = Math.max(0.1f, pitch - pitchRandomness);
+            float maxPitch = Math.max(minPitch + 0.01f, pitch + pitchRandomness);
+            pitch = RANDOM.nextFloat(minPitch, maxPitch);
         }
         soundManager.play(UISoundInstance.create(sound, volume, pitch));
         playedSoundsCount++;
@@ -104,6 +107,13 @@ public class FancyAdvancementToast {
 
     private void playSound(ResourceLocation soundLocation, float volume) {
         playSound(SoundEvent.createVariableRangeEvent(soundLocation), volume);
+    }
+
+    public void discard() {
+        if (!isDead) {
+            animation.unsubscribeFromGeneralConfigDataEvent();
+            isDead = true;
+        }
     }
 
     public boolean isDead() {
@@ -116,5 +126,9 @@ public class FancyAdvancementToast {
 
     public int getHeight() {
         return HEIGHT;
+    }
+
+    public AdvancementDisplay getDisplay() {
+        return display;
     }
 }

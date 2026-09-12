@@ -37,6 +37,7 @@ public class CustomTextureManager {
     };
 
     private final Map<ResourceLocation, DisplayData> customTextures = new HashMap<>();
+    private final Map<ResourceLocation, File> textureFileMap = new HashMap<>();
     private final List<ResourceLocation> registeredInMinecraft = new ArrayList<>();
     private final Map<ResourceLocation, List<FancyAdvancementToast>> beingUsed = new HashMap<>();
 
@@ -62,8 +63,12 @@ public class CustomTextureManager {
     }
 
     public void addBeingUsed(ResourceLocation id, FancyAdvancementToast toast) {
-        if (!id.getPath().contains(Constants.CONFIG)) {
+        if (id == null || !id.getPath().contains(Constants.CONFIG)) {
             return;
+        }
+
+        if (!isRegisteredMinecraft(id)) {
+            registerInMinecraft(id);
         }
 
         beingUsed.computeIfAbsent(id, list -> new ArrayList<>()).add(toast);
@@ -71,6 +76,10 @@ public class CustomTextureManager {
     }
 
     public void removeBeingUsed(FancyAdvancementToast toast) {
+        if (toast == null) {
+            return;
+        }
+
         ResourceLocation id = null;
         for (Map.Entry<ResourceLocation, List<FancyAdvancementToast>> entry : beingUsed.entrySet()) {
             if (entry.getValue().contains(toast)) {
@@ -112,7 +121,6 @@ public class CustomTextureManager {
             textureManager.register(id, dynamicTexture);
             registeredInMinecraft.add(id);
 
-            image.close();
             LOGGER.info("Registered in Minecraft: {}; {}", id, dynamicTextureName);
         } catch (IOException e) {
             throw new RuntimeException("An error occurred while registering custom texture in Minecraft: ", e);
@@ -141,18 +149,19 @@ public class CustomTextureManager {
 
     public void clear() {
         ResourceLocation currentId = toastConfigData.getTextureId();
-        if (currentId.getPath().contains(Constants.CONFIG)) {
-            registeredInMinecraft.forEach(id -> {
-                if (currentId != id) textureManager.release(id);
+        if (currentId != null && currentId.getPath().contains(Constants.CONFIG)) {
+            new ArrayList<>(registeredInMinecraft).forEach(id -> {
+                if (!currentId.equals(id)) {
+                    textureManager.release(id);
+                    registeredInMinecraft.remove(id);
+                }
             });
         } else {
-            registeredInMinecraft.forEach(id -> {
-                textureManager.release(id);
-            });
+            new ArrayList<>(registeredInMinecraft).forEach(textureManager::release);
+            registeredInMinecraft.clear();
         }
 
         beingUsed.clear();
-        registeredInMinecraft.clear();
     }
 
     public void reload() {
@@ -192,6 +201,7 @@ public class CustomTextureManager {
 
     private void register(Map<String, File> texturesMap, List<File> jsonFiles) {
         customTextures.clear();
+        textureFileMap.clear();
 
         for (File jsonFile : jsonFiles) {
             File textureFile = texturesMap.get(FileHelper.getRawName(jsonFile));
@@ -204,6 +214,7 @@ public class CustomTextureManager {
                     ResourceLocation id = getIdFromFile(textureFile);
 
                     customTextures.put(id, data);
+                    textureFileMap.put(id, textureFile);
                     LOGGER.info("Added: {}", id);
                 } else {
                     LOGGER.warn("Json data is outdated or corrupted! File: {}", jsonFile.getAbsolutePath());
@@ -228,18 +239,23 @@ public class CustomTextureManager {
         });
     }
 
-    // Make it more constant
-    // Please, don't forget
-    // Uugh God
     private ResourceLocation getIdFromFile(File file) {
-        String rawPath = file.getPath().replace("\\", "/").replaceFirst("./config/fancytoasts", "config");
-        Debug.warn(rawPath);
-        return ResourceLocations.of(rawPath);
+        String sanitizedName = file.getName().toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9/._-]", "_");
+        return ResourceLocations.of("config/textures/" + sanitizedName);
     }
 
     private File getFileFromId(ResourceLocation id) {
-        String rawPath = id.getPath().replaceFirst("config", "./config/fancytoasts");
-        Debug.warn(rawPath);
-        return new File(rawPath);
+        File mappedFile = textureFileMap.get(id);
+        if (mappedFile != null && mappedFile.exists()) {
+            return mappedFile;
+        }
+
+        String path = id.getPath();
+        if (path.startsWith("config/")) {
+            path = path.substring(7);
+        } else if (path.startsWith("config")) {
+            path = path.substring(6);
+        }
+        return new File(Paths.CONFIG, path);
     }
 }

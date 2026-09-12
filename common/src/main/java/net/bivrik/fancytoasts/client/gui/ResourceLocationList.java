@@ -50,7 +50,7 @@ public class ResourceLocationList extends ObjectSelectionList<ResourceLocationLi
     }
 
     @Override
-    protected int getScrollbarPosition() {
+    protected int scrollBarX() {
         return this.getX() + this.width - 8;
     }
 
@@ -189,11 +189,8 @@ public class ResourceLocationList extends ObjectSelectionList<ResourceLocationLi
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            if (Util.getMillis() - lastClickTime >= 250L) {
-                lastClickTime = Util.getMillis();
+            if (button == 0) {
                 focus();
-            }
-            else {
                 select();
             }
 
@@ -247,6 +244,11 @@ public class ResourceLocationList extends ObjectSelectionList<ResourceLocationLi
 
             int nameX = x + 3;
             int nameY = y + 3;
+
+            if (nameLines.isEmpty()) {
+                return;
+            }
+
             FormattedCharSequence nameFirstLine = nameLines.getFirst();
 
             if (nameLines.size() == 1) {
@@ -258,7 +260,7 @@ public class ResourceLocationList extends ObjectSelectionList<ResourceLocationLi
             }
 
             if (isConfig) {
-                guiGraphics.drawString(font, Component.literal("c"),  + width - 10, nameY, Color.LIGHT_GRAY.getARGB());
+                guiGraphics.drawString(font, Component.literal("c"), x + width - 10, nameY, Color.LIGHT_GRAY.getARGB());
             }
         }
     }
