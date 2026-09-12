@@ -1,9 +1,9 @@
 package net.bivrik.fancytoasts.compat;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import dev.ftb.mods.ftblibrary.icon.Icon;
 import dev.ftb.mods.ftblibrary.icon.IconAnimation;
@@ -24,7 +24,7 @@ import net.minecraft.world.item.ItemStack;
 public class FTBQuestsCompat {
     private static final ResourceLocation BOOK_ID = ResourceLocations.withNamespaceAndPath(Constants.Compatibilities.FTB_QUESTS_ID, "book");
 
-    private static final Map<Long, Long> REPEATABLE_QUESTS = new HashMap<>();
+    private static final Map<Long, Long> REPEATABLE_QUESTS = new ConcurrentHashMap<>();
     private static final int DELAY = 1000 * 60 * 3;
 
     public static boolean isQuest(Toast toast) {

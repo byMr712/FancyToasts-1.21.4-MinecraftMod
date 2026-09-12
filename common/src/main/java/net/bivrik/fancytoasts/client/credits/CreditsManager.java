@@ -23,7 +23,7 @@ public class CreditsManager {
     private static final String CREDITS_URL = "https://cdn.jsdelivr.net/gh/Bivrik/ModsCredits@master/credits/mods/fancytoasts.json";
     private static final int CACHE_VALIDITY_HOURS = 6;
 
-    private CreditsData credits;
+    private volatile CreditsData credits;
 
     public CreditsManager() {
         loadAndCombineCreditsAsync().thenAccept(credits -> {
