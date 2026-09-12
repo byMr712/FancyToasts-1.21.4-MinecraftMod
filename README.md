@@ -2,94 +2,96 @@
     <img src="https://raw.githubusercontent.com/Bivrik/FancyToasts/master/.github/assets/logo.png" alt="Fancy Toasts logo" width="150"/>
 </div>
 
-# Fancy Toasts
+> **Language:** Русский · [English](README.en.md)
 
-<div>
-    [![Version](https://img.shields.io/badge/version-1.21.4-green.svg)]()
-	[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
+## Описание моего форка
+Этот форк был создан для завершения версии для Minecraft 1.21.4 — и исключительно для этой версии; если вам нужны другие версии, пожалуйста, ознакомьтесь с [оригинальным репозиторием](https://github.com/Bivrik/FancyToasts) и страницами на [Modrinth](https://modrinth.com/mod/fancy-toasts) или [CurseForge](https://www.curseforge.com/minecraft/mc-mods/fancy-toasts).
+
+# Fancy Toasts
+[![Version](https://img.shields.io/badge/version-1.21.4-green.svg)]()
+[![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
     <a href="https://boosty.to/bivrik" target="_blank">
         <img alt="Boosty static badge" src="https://img.shields.io/badge/boosty-support-orange?style=flat-square&logo=boosty&logoColor=white">
     </a>
     <a href="https://discord.gg/9XuRDgbbZe" target="_blank">
         <img alt="Discord Server static badge" src="https://img.shields.io/badge/discord-join-rgb(88, 101, 242)?style=flat-square&logo=discord&logoColor=white">
     </a>
-</div>
 
-Fancy Toasts is a Minecraft mod that replaces plain, boring, and annoying advancement toasts with something new, customizable, and exciting! It was never about gameplay or mechanics, but the atmosphere.
+Fancy Toasts — это мод для Minecraft, который заменяет простые, скучные и надоедливые всплывающие уведомления о достижениях (toasts) чем-то новым, настраиваемым и увлекательным! Этот мод никогда не был про геймплей или механики — он про атмосферу.
 
 <div>
     <img src="https://raw.githubusercontent.com/Bivrik/FancyToasts/refs/heads/master/.github/assets/standard_animtion.gif" alt="Standard animation showcase" width="400"/>
     <img src="https://raw.githubusercontent.com/Bivrik/FancyToasts/refs/heads/master/.github/assets/quirky_animation.gif" alt="Quirky animation showcase" width="400"/>
 </div>
 
-# Features
+# Возможности
 
-## Visual settings 🖼️
+## Визуальные настройки 🖼️
 
-It has a wide variety of textures and animations, which are the main visual settings. Currently, there are 8 textures and 4 animations, which can be combined into 32 unique patterns to better match player's mood, playstyle, and vibe!
+Мод предлагает широкий выбор текстур и анимаций, являющихся основными визуальными настройками. На данный момент доступно 8 текстур и 4 анимации, которые можно комбинировать в 32 уникальных стиля, чтобы они лучше соответствовали настроению, стилю игры и атмосфере игрока!
 
-### Textures
+### Текстуры
 
-* Vanilla-Like
-* Nature
-* OG
-* Modern
-* Terracraft (inspired by Terraria)
-* Steamy (inspired by Steam)
-* Landspaper
-* Neon
+* Vanilla-Like (Стиль Minecraft)
+* Nature (Природа)
+* OG (Классика)
+* Modern (Модерн)
+* Terracraft (вдохновлено Terraria)
+* Steamy (вдохновлено Steam)
+* Landspaper (Бумажная)
+* Neon (Неон)
 
-### Animations
+### Анимации
 
-* Standard
-* Playful
-* Quirky
-* Old-Like
+* Standard (Стандарт)
+* Playful (Игривый)
+* Quirky (Неординарный)
+* Old-Like (Старомодный)
 
-## Custom Textures 🤪
+## Пользовательские текстуры 🤪
 
-It supports custom textures, which can be loaded through data-driven system. You can use textures from friends, modpacks, or even create your own!
+Мод поддерживает пользовательские текстуры, которые можно загружать через data-driven систему. Вы можете использовать текстуры от друзей, из модпаков или даже создавать свои собственные!
 
-In case of creating your own, you would want to follow [Custom Textures Guide](https://github.com/Bivrik/FancyToasts/wiki/Custom-Texture-Guide). It's almost as easy as just drawing a texture. With this, possibilities of customization are endless! If you just want to add existing textures from wherever, check out [Using Custom Textures Guide](https://github.com/Bivrik/FancyToasts/wiki/Custom-Texture-Guide#using).
+Если вы решите создать свои, ознакомьтесь с [руководством по созданию пользовательских текстур](https://github.com/Bivrik/FancyToasts/wiki/Custom-Texture-Guide). Это почти так же просто, как просто нарисовать текстуру. С этим возможности кастомизации безграничны! Если вы просто хотите добавить уже готовые текстуры откуда угодно, ознакомьтесь с [руководством по использованию пользовательских текстур](https://github.com/Bivrik/FancyToasts/wiki/Custom-Texture-Guide#using).
 
-## Flexible Settings ✨
+## Гибкие настройки ✨
 
-I really care about players convenience. Because of that, it adds new polished menus for configuration, that are built to minimize friction between creativity and monotony. Especially when there are large amount of options to configure and adjust to your liking.
+Я действительно забочусь об удобстве игроков. Поэтому мод добавляет новые проработанные меню конфигурации, созданные для того, чтобы свести к минимуму трение между творчеством и рутиной. Особенно когда доступно огромное количество параметров, которые можно настроить под себя.
 
-### Options
+### Параметры
 
-* Compatibility settings with other mods
-* Volume and pitch settings
-* Screen behaviour (the way advancement toast interacts with menus like inventory, chest, etc.)
-* Anchor and its relative `x` and `y` coordinates
-* Information displayed on the advancement toast as title and description
-* Loops speed (sin/cos waves)
-* Animation speed
-* Advancement toasts filtering (based on their resource location)
+* Настройки совместимости с другими модами
+* Настройки громкости и высоты звука
+* Поведение на экране (то, как всплывающее уведомление взаимодействует с меню, такими как инвентарь, сундук и т. д.)
+* Якорь (anchor) и его относительные координаты `x` и `y`
+* Информация, отображаемая на всплывающем уведомлении в качестве заголовка и описания
+* Скорость циклов (синусоидальные/косинусоидальные волны)
+* Скорость анимации
+* Фильтрация всплывающих уведомлений о достижениях (на основе их resource location)
 
-## Version Support 📋
+## Поддержка версий 📋
 
-I plan to port Fancy Toasts to as many versions as possible, but not every of them would get constant updates. Therefore, currently supported versions are:
+Этот форк был создан для завершения версии для Minecraft 1.21.4 — и исключительно для этой версии:
 
-| Minecraft version |
+| Версия Minecraft |
 |-------------------|
 | 1.21.4            |
 
-# Other
+# Прочее
 
-## Support 🧡
+## Поддержка 🧡
 
-Developing anything is never an easy job. Therefore, if you like my mods, play with them, and you would want to support me, hear my thoughts, or even see devlogs, then visit my [Boosty Blog](https://boosty.to/bivrik). Whether it's a follow, one-time donation or a subscription - I will be very grateful!
+Разработка чего-либо никогда не бывает легкой задачей. Поэтому, если вам нравятся мои моды, вы играете с ними и хотите поддержать меня, услышать мои мысли или даже посмотреть девлоги, загляните в мой [блог на Boosty](https://boosty.to/bivrik). Будь то отслеживание, разовое пожертвование или подписка — я буду очень благодарен!
 
-## Languages 🌍
+## Языки 🌍
 
-| Language              | Key     | Made By              |
-|-----------------------|---------|----------------------|
-| English               | `en_us` |                      |
-| Russian               | `ru_ru` |                      |
-| Spanish               | `es_es` | `translator`         |
-| German                | `de_de` | `translator`         |
-| Portuguese            | `pt_br` | `translator`         |
-| Chinese (simplified)  | `zh_cn` | Gao Xinyang          |
-| Chinese (traditional) | `zh_tw` | ChaTian, Gao Xinyang |
-| Japanese              | `ja_jp` | PExPE3               |
+| Язык                      | Ключ    | Переводчик           |
+|---------------------------|---------|----------------------|
+| Английский                | `en_us` |                      |
+| Русский                   | `ru_ru` |                      |
+| Испанский                 | `es_es` | `translator`         |
+| Немецкий                  | `de_de` | `translator`         |
+| Португальский             | `pt_br` | `translator`         |
+| Китайский (упрощенный)    | `zh_cn` | Gao Xinyang          |
+| Китайский (традиционный)  | `zh_tw` | ChaTian, Gao Xinyang |
+| Японский                  | `ja_jp` | PExPE3               |
