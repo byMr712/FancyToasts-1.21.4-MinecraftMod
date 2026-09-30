@@ -41,11 +41,16 @@ public enum ToastAnchor {
         return offsetY;
     }
 
-    public Vector2d getPosition(int width, int height, int offsetX, int offsetY) {
-        int anchoredWidth = (int) (width * anchorX);
-        int anchoredHeight = (int) (height * anchorY);
+    public int getX(int width, int offsetX) {
+        return (int) (width * anchorX) + offsetX;
+    }
 
-        return new Vector2d(anchoredWidth + offsetX, anchoredHeight + offsetY);
+    public int getY(int height, int offsetY) {
+        return (int) (height * anchorY) + offsetY;
+    }
+
+    public Vector2d getPosition(int width, int height, int offsetX, int offsetY) {
+        return new Vector2d(getX(width, offsetX), getY(height, offsetY));
     }
 
     public String getName() {

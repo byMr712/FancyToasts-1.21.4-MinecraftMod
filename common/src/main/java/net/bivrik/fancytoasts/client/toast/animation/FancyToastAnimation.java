@@ -82,6 +82,9 @@ public abstract class FancyToastAnimation {
         loopsSpeed = data.getLoopsSpeed();
     }
 
+    private FormattedCharSequence titleDots;
+    private FormattedCharSequence descriptionDots;
+
     protected void setLines(Component animationTitle, Component animationDescription) {
         Component title;
         Component description;
@@ -98,6 +101,9 @@ public abstract class FancyToastAnimation {
 
         titleLines = font.split(title, 142);
         descriptionLines = font.split(description, 142);
+
+        titleDots = FormattedCharSequence.forward("...", titleStyle);
+        descriptionDots = FormattedCharSequence.forward("...", descriptionStyle);
     }
 
     protected List<FormattedCharSequence> getTitleLines() {
@@ -120,7 +126,7 @@ public abstract class FancyToastAnimation {
     }
 
     protected final void drawIcon(GuiContext context, float alpha) {
-        context.drawGUITexture(textureLocation, 68, 0, 26, 26, typeBasedUVs.frame(), getColor(alpha).getARGB());
+        context.drawGUITexture(textureLocation, 68, 0, 26, 26, typeBasedUVs.frame(), getColorARGB(alpha));
         context.guiGraphics().renderFakeItem(display.getIcon(), 73, 5);
     }
     protected final void drawIcon(GuiContext context) {
@@ -128,14 +134,14 @@ public abstract class FancyToastAnimation {
     }
 
     protected final void drawBanner(GuiContext context, float alpha) {
-        context.drawGUITexture(textureLocation, 0, 5, 162, 14, typeBasedUVs.banner(), getColor(alpha).getARGB());
+        context.drawGUITexture(textureLocation, 0, 5, 162, 14, typeBasedUVs.banner(), getColorARGB(alpha));
     }
     protected void drawBanner(GuiContext context) {
         drawBanner(context, 1);
     }
 
     protected final void drawBackground(GuiContext context, float alpha) {
-        int color = getColor(alpha).getARGB();
+        int color = getColorARGB(alpha);
         context.drawGUITexture(textureLocation, 0, 20, 162, 40, backgroundUV, color);
         context.drawGUITexture(textureLocation, 144, 54, 9, 14, plaqueUV, color);
     }
@@ -149,13 +155,13 @@ public abstract class FancyToastAnimation {
         }
 
         int toastCenterX = toastWidth / 2;
-        int titleColorARGB = getTitleColor(alpha).getARGB();
+        int titleColorARGB = getTitleColorARGB(alpha);
         FormattedCharSequence titleLine = titleLines.getFirst();
 
         if (titleLines.size() == 1) {
             graphics.drawCenteredString(font, titleLine, toastCenterX, 25, titleColorARGB);
         } else {
-            graphics.drawCenteredString(font, FormattedCharSequence.composite(titleLine, getDots(titleStyle)), toastCenterX , 25, titleColorARGB);
+            graphics.drawCenteredString(font, FormattedCharSequence.composite(titleLine, titleDots != null ? titleDots : getDots(titleStyle)), toastCenterX , 25, titleColorARGB);
         }
     }
 
@@ -164,7 +170,7 @@ public abstract class FancyToastAnimation {
             return;
         }
 
-        int descriptionColorARGB = getDescriptionColor(alpha).getARGB();
+        int descriptionColorARGB = getDescriptionColorARGB(alpha);
 
         graphics.drawString(font, descriptionLines.get(0), 8, 38, descriptionColorARGB);
         if (descriptionLines.size() > 1) {
@@ -172,13 +178,17 @@ public abstract class FancyToastAnimation {
             graphics.drawString(font, descriptionSecondLine, 8, 47, descriptionColorARGB);
 
             if (descriptionLines.size() > 2) {
-                graphics.drawString(font, getDots(descriptionStyle), font.width(descriptionSecondLine) + 8, 47, descriptionColorARGB);
+                graphics.drawString(font, descriptionDots != null ? descriptionDots : getDots(descriptionStyle), font.width(descriptionSecondLine) + 8, 47, descriptionColorARGB);
             }
         }
     }
 
     protected final FormattedCharSequence getDots(Style style) {
         return FormattedCharSequence.forward("...", style);
+    }
+
+    private int getColorARGB(float alpha) {
+        return Color.WHITE.getARGBWithAlpha(guiAlpha * alpha);
     }
 
     private Color getColor(float alpha) {
@@ -200,8 +210,16 @@ public abstract class FancyToastAnimation {
         return (float) Math.cos(scaledTime * speed * loopsSpeed) * strength * loopsStrength;
     }
 
+    protected final int getTitleColorARGB(float alpha) {
+        return display.getTitleColor().getARGBWithAlpha(getTextSafeAlpha(alpha));
+    }
+
     protected final Color getTitleColor(float alpha) {
         return display.getTitleColor().withAlpha(getTextSafeAlpha(alpha));
+    }
+
+    protected final int getDescriptionColorARGB(float alpha) {
+        return display.getDescriptionColor().getARGBWithAlpha(getTextSafeAlpha(alpha));
     }
 
     protected final Color getDescriptionColor(float alpha) {

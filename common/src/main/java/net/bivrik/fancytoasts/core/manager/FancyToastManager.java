@@ -1,6 +1,7 @@
 package net.bivrik.fancytoasts.core.manager;
 
 import net.bivrik.fancytoasts.FancyToasts;
+import net.bivrik.fancytoasts.client.config.ToastAnchor;
 import net.bivrik.fancytoasts.client.config.ToastScreenBehavior;
 import net.bivrik.fancytoasts.client.config.data.GeneralConfigData;
 import net.bivrik.fancytoasts.client.config.data.ToastConfigData;
@@ -101,15 +102,15 @@ public class FancyToastManager {
         int screenWidth = guiGraphics.guiWidth();
         int screenHeight = guiGraphics.guiHeight();
 
-        Vector2d toastPosition = generalConfigData.getToastAnchor().getPosition(screenWidth, screenHeight, generalConfigData.getOffsetX(), -generalConfigData.getOffsetY());
-        int xPos = (int) toastPosition.x() - currentToast.getWidth() / 2;
-        int yPos = (int) toastPosition.y() - currentToast.getHeight() / 2;
+        ToastAnchor anchor = generalConfigData.getToastAnchor();
+        int xPos = anchor.getX(screenWidth, generalConfigData.getOffsetX()) - currentToast.getWidth() / 2;
+        int yPos = anchor.getY(screenHeight, -generalConfigData.getOffsetY()) - currentToast.getHeight() / 2;
 
-        GuiContext context = new GuiContext(guiGraphics);
-        context.push();
-        context.translate(xPos, yPos, 800.0f);
+        var pose = guiGraphics.pose();
+        pose.pushPose();
+        pose.translate(xPos, yPos, 800.0f);
         currentToast.render(guiGraphics, partialTick);
-        context.pop();
+        pose.popPose();
     }
 
     public void showTestToast(AdvancementDisplay display, ResourceLocation textureId, ResourceLocation animationId, ResourceLocation soundId) {

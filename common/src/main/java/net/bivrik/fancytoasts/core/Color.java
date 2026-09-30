@@ -63,6 +63,11 @@ public final class Color {
         return b;
     }
 
+    public int getARGBWithAlpha(float a) {
+        int alpha = floatToInt(clamp(a));
+        return (alpha << 24) | (argb & 0x00FFFFFF);
+    }
+
     public Color withAlpha(float a) {
         return new Color(this, a);
     }
