@@ -8,7 +8,7 @@
 ![ModMenu](https://img.shields.io/badge/ModMenu-Supported-blue.svg)
 ![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)
 
-Порт и обновление мода **Fancy Toasts** для **Minecraft 1.21.4 (Fabric)** от **byMr712**.
+Порт и обновление мода **Fancy Toasts** для **Minecraft 1.21.4 (Fabric)**.
 
 Оригинальный разработчик: [Bivrik/FancyToasts](https://github.com/Bivrik/FancyToasts).
 
@@ -69,7 +69,7 @@
 
 - Полная адаптация и завершение сборки под **Minecraft 1.21.4** (Fabric Loader, Parchment mappings, Java 21 LTS).
 - Обновление рендеринга GUI, текстурных спрайтов и интеграции с ModMenu/Jade.
-- Настроена быстрая сборка и автокопирование скомпилированного мода в лаунчер.
+- Настроена оптимизированная сборка мода.
 
 ---
 
@@ -77,9 +77,8 @@
 
 1. Скачайте последнюю версию со страницы [GitHub Releases](https://github.com/byMr712/FancyToasts-1.21.4-MinecraftMod/releases).
 2. Требуются:
-   - [Fabric Loader](https://fabricmc.net/) (Minecraft 1.21.4)
    - [Fabric API](https://modrinth.com/mod/fabric-api)
-   - [Mod Menu](https://modrinth.com/mod/modmenu) (рекомендуется)
+   - [Mod Menu](https://modrinth.com/mod/modmenu) (по желанию)
 3. Поместите `.jar` файл в папку `mods`.
 4. Запустите игру.
 

@@ -8,8 +8,6 @@ base {
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(java_version)
-    withSourcesJar()
-    withJavadocJar()
 }
 
 repositories {
@@ -24,7 +22,6 @@ repositories {
 }
 
 jar {
-    destinationDirectory = rootProject.file('build/libs/')
     archiveVersion = ''
 
     manifest {
@@ -91,9 +88,12 @@ tasks.withType(ProcessResources).configureEach {
 }
 
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
-    configurations."$variant".outgoing {
-        capability("$group:${base.archivesName.get()}:$version")
-        capability("$group:$mod_id-${project.name}-${minecraft_version}:$version")
-        capability("$group:$mod_id:$version")
+    def config = configurations.findByName(variant)
+    if (config != null) {
+        config.outgoing {
+            capability("$group:${base.archivesName.get()}:$version")
+            capability("$group:$mod_id-${project.name}-${minecraft_version}:$version")
+            capability("$group:$mod_id:$version")
+        }
     }
 }

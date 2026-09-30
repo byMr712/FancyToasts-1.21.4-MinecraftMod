@@ -8,7 +8,7 @@
 ![ModMenu](https://img.shields.io/badge/ModMenu-Supported-blue.svg)
 ![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)
 
-Port and update of the **Fancy Toasts** mod for **Minecraft 1.21.4 (Fabric)** by **byMr712**.
+Port and update of the **Fancy Toasts** mod for **Minecraft 1.21.4 (Fabric)**.
 
 Original Developer: [Bivrik/FancyToasts](https://github.com/Bivrik/FancyToasts).
 
@@ -69,7 +69,7 @@ Supports loading user-created custom textures via data-driven datapacks and reso
 
 - Full adaptation and finalized build for **Minecraft 1.21.4** (Fabric Loader, Parchment mappings, Java 21 LTS).
 - Updated GUI rendering, texture sprites, and ModMenu/Jade integration.
-- Configured fast build scripts and auto-copy to the launcher instance folder.
+- Configured optimized build scripts.
 
 ---
 
@@ -77,9 +77,8 @@ Supports loading user-created custom textures via data-driven datapacks and reso
 
 1. Download the latest release from [GitHub Releases](https://github.com/byMr712/FancyToasts-1.21.4-MinecraftMod/releases).
 2. Requires:
-   - [Fabric Loader](https://fabricmc.net/) (Minecraft 1.21.4)
    - [Fabric API](https://modrinth.com/mod/fabric-api)
-   - [Mod Menu](https://modrinth.com/mod/modmenu) (recommended)
+   - [Mod Menu](https://modrinth.com/mod/modmenu) (optional)
 3. Place the `.jar` file into your `mods` folder.
 4. Launch the game.
 
